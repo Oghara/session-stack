@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+project_dir=$(cd -- "$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")" && pwd)
+export SESSION_STACK_LOCK_CONFIG_DIR="$project_dir/quickshell/session-stack-lock"
+export SESSION_STACK_LID_MONITOR="$project_dir/scripts/session-stack-lid-monitor.py"
+export SESSION_STACK_HYPRLOCK_CONFIG="$project_dir/fallback/hyprlock.conf"
+case "${1:-help}" in
+    preview)
+        SESSION_STACK_ENABLED_METHODS=$(python3 "$project_dir/scripts/lock-settings.py" --preview)
+        export SESSION_STACK_ENABLED_METHODS
+        ;;
+    auth-check|check|lock|prepare-sleep)
+        SESSION_STACK_ENABLED_METHODS=$(python3 "$project_dir/scripts/lock-settings.py")
+        export SESSION_STACK_ENABLED_METHODS
+        ;;
+esac
+
+case "${1:-help}" in
+    login-preview)
+        if [[ ! -f $project_dir/quickshell/session-stack-greeter/shell.qml ]]; then
+            echo 'Login support is optional; use the full Session Stack package.' >&2
+            exit 1
+        fi
+        exec env -u GREETD_SOCK SESSION_STACK_GREETER_MODE=preview \
+            quickshell --no-duplicate --path "$project_dir/quickshell/session-stack-greeter"
+        ;;
+    preview|auth-check)
+        export SESSION_STACK_LOCK_MODE=$1
+        export SESSION_STACK_LOCK_MOTION_AUTO_UNLOCK=0
+        exec quickshell --no-duplicate --path "$SESSION_STACK_LOCK_CONFIG_DIR"
+        ;;
+    check)
+        exec "$project_dir/scripts/open-session-lock.sh" --check
+        ;;
+    lock)
+        exec "$project_dir/scripts/open-session-lock.sh" lock
+        ;;
+    prepare-sleep)
+        exec "$project_dir/scripts/open-session-lock.sh" --prepare-sleep
+        ;;
+    *)
+        echo 'Usage: session-stack {preview|login-preview|auth-check|check|lock|prepare-sleep}'
+        echo 'Preview never authenticates. Auth-check uses PAM without locking.'
+        echo 'Configure lock.local.toml, or set SESSION_STACK_AUTH_METHODS=password-face.'
+        [[ ${1:-help} == help ]]
+        ;;
+esac

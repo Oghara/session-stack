@@ -1,0 +1,2 @@
+# Keep upstream patch context and its recorded checksum intact.
+/packaging/**/*.patch -whitespace

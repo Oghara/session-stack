@@ -1,0 +1,5 @@
+# Fingerprint-only authentication worker for the Session Stack QuickShell lock.
+# This is the only worker allowed to claim fprintd; password and face use
+# separate PAM conversations so this module's blocking wait cannot delay them.
+
+auth        required    pam_fprintd.so

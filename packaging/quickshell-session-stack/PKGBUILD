@@ -1,0 +1,67 @@
+# Maintainer: Session Stack
+# Based on the official Arch Linux quickshell 0.3.0-3 recipe.
+
+pkgname=quickshell-session-stack
+_pkgname=quickshell
+pkgver=0.3.0
+pkgrel=4.1
+pkgdesc='QuickShell with the reviewed session-lock output-lifecycle backport'
+arch=(x86_64 aarch64)
+url="https://git.outfoxxed.me/$_pkgname/$_pkgname"
+license=(LGPL-3.0-only)
+provides=("quickshell=$pkgver" 'quickshell-session-lock-output-teardown=1')
+conflicts=(quickshell)
+depends=(cpptrace libcpptrace.so
+         glibc
+         hicolor-icon-theme
+         jemalloc libjemalloc.so
+         libdrm
+         libgcc libgcc_s.so
+         libglvnd libEGL.so libOpenGL.so
+         libpipewire libpipewire-0.3.so
+         libstdc++ libstdc++.so
+         libxcb
+         mesa
+         pam libpam.so
+         polkit
+         qt6-base
+         qt6-declarative
+         qt6-svg
+         qt6-wayland
+         wayland libwayland-client.so)
+makedepends=(cli11
+             cmake
+             ninja
+             qt6-shadertools
+             spirv-tools
+             vulkan-headers
+             wayland-protocols)
+source=("$_pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz"
+        '897fcda-session-lock-output-lifecycle.patch')
+sha256sums=('f4821f9084cab04bd2b5384cc92b9726aecc4ce3eb27200dca24edc67da3b6e5'
+            '5a9668951bbd06747ad764536b7e8ecef930481ce6375e5c4dfe61293748079f')
+
+prepare() {
+	cd "$_pkgname"
+	patch -Np1 <"$srcdir/897fcda-session-lock-output-lifecycle.patch"
+}
+
+build() {
+	cd "$_pkgname"
+	local cmake_options=(
+		-D CMAKE_BUILD_TYPE=RelWithDebInfo
+		-D DISTRIBUTOR='Session Stack Arch backport'
+		-D DISTRIBUTOR_DEBUGINFO_AVAILABLE=Yes
+		-D CRASH_REPORTER=Off
+		-D CMAKE_INSTALL_PREFIX=/usr
+		-D INSTALL_QML_PREFIX=lib/qt6/qml
+	)
+	cmake -G Ninja -B build -W no-dev "${cmake_options[@]}"
+	cmake --build build
+}
+
+package() {
+	cd "$_pkgname"
+	DESTDIR="$pkgdir" cmake --install build
+	install -Dm0644 -t "$pkgdir/usr/share/licenses/$pkgname/" LICENSE
+}

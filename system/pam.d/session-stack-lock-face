@@ -1,0 +1,6 @@
+# Face-only authentication worker for the Session Stack QuickShell lock.
+# This service must never contain pam_fprintd: the fingerprint reader has one
+# dedicated PAM worker owned by the lock process.
+
+auth        required    pam_env.so
+auth        required    pam_howrs.so

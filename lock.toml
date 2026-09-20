@@ -1,0 +1,6 @@
+# Copy to lock.local.toml for this PC. Login has its own greeter.toml.
+[authentication]
+password = true
+face = "off"
+fingerprint = "off"
+probe_timeout_seconds = 3

@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+greeter.local.toml
+*.zip
+lock.local.toml

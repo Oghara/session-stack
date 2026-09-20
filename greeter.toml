@@ -1,0 +1,10 @@
+# Copy this file to greeter.local.toml for machine-specific preferences.
+# Settings are applied when staging a release, not while typing a password.
+[authentication]
+password = true
+# auto: offer only for accounts with a detected backend/device/enrollment.
+# on: same detection, but fail staging if no account can use the method.
+# off: hide the method and skip its hardware probe.
+face = "auto"
+fingerprint = "auto"
+probe_timeout_seconds = 3
