@@ -69,7 +69,7 @@ Item {
         fingerprintPhase === LockAuthState.Working
     readonly property int maxBiometricFailures: 3
     readonly property string quarantineNotice:
-        "Black ICE quarantine — jack in the ICEbreaker to restore authentication"
+        "Black ICE quarantine. Jack in the ICEbreaker to try again."
     property int activePasswordGeneration: -1
     property int activeFaceGeneration: -1
     property int activeFingerprintGeneration: -1
@@ -131,7 +131,7 @@ Item {
                 fingerprintStatus = "Waiting for terminal activation";
                 facePhase = LockAuthState.Waiting;
                 fingerprintPhase = LockAuthState.Waiting;
-                statusText = "Terminal dormant — biometric hardware is unloaded";
+                statusText = "Terminal dormant. Biometric scans stopped.";
             }
             return;
         }
@@ -163,7 +163,7 @@ Item {
         if (systemSleepPending)
             return;
 
-        statusText = "Compositor lock secured — all authentication paths are available";
+        statusText = "Session locked. Ready to authenticate.";
         if (biometricWorkersStarted)
             retryBiometricWorkers();
         else
@@ -193,7 +193,7 @@ Item {
         if (!wasKnown || wasClosed || biometricPauseFromLid) {
             biometricPauseFromLid = false;
             if (lifecycleManaged)
-                statusText = "Terminal active — biometric authentication is available";
+                statusText = "Terminal active. Ready to authenticate.";
             retryBiometricWorkers(true);
         }
     }
@@ -270,7 +270,7 @@ Item {
 
         if (!faceRequested) {
             facePhase = LockAuthState.Waiting;
-            faceStatus = "Face ID ready — click to scan";
+            faceStatus = "Face ID ready. Select to scan.";
             return;
         }
 
@@ -352,7 +352,7 @@ Item {
 
     function updateBiometricPauseStatus() {
         if (facePaused && fingerprintPaused && !accepted)
-            statusText = "Biometrics paused after repeated failures — password remains available; select a method to retry";
+            statusText = "Biometric scans paused after repeated failures. Select a method to retry.";
     }
 
     function handleFaceFailure(message) {
@@ -414,7 +414,7 @@ Item {
         fingerprintStatus = reason;
         facePhase = LockAuthState.Paused;
         fingerprintPhase = LockAuthState.Paused;
-        statusText = reason + " — password remains available; select a method to retry";
+        statusText = reason + ". Select an authentication method to retry.";
     }
 
     function pauseForSleep() {
@@ -443,7 +443,7 @@ Item {
         if (retryWorkers)
             retryBiometricWorkers();
         else
-            statusText = "ICEbreaker complete — authentication channels restored";
+            statusText = "ICEbreaker complete. Ready to authenticate.";
     }
 
     function retryBiometricWorkers(preserveFailureState) {
@@ -487,9 +487,9 @@ Item {
             fingerprintPhase = LockAuthState.Working;
         }
         statusText = realLock
-            ? "Compositor lock secured — restarting biometric authentication"
+            ? "Session locked. Restarting biometric scans."
             : lifecycleManaged
-                ? "Terminal active — restarting biometric authentication"
+                ? "Terminal active. Restarting biometric scans."
                 : "Restarting biometric authentication check";
         startFaceWorker();
         startFingerprintWorker();
@@ -549,7 +549,7 @@ Item {
         if (realLock && !sessionSecure) {
             result = LockAuthState.NoResult;
             statusText = method
-                + " completed while compositor security was unavailable — retry after the lock is secured";
+                + " completed while the session was not securely locked. Try again once it is locked.";
             return;
         }
 
@@ -560,7 +560,7 @@ Item {
 
         statusText = method + " accepted";
         if (!realLock)
-            statusText += " — authentication workers stopped; the session stayed unlocked";
+            statusText += ". Authentication stopped. The session was not locked.";
         authenticationAccepted(method);
     }
 

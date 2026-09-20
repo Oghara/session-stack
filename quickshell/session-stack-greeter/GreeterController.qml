@@ -32,10 +32,10 @@ QtObject {
     property bool conversationActive: false
     property bool backendReusable: true
     property string faceStatus: biometricSelectionEnabled
-        ? "Face ID ready — click to scan" : "Login biometric channel not configured"
+        ? "Face ID ready. Select to scan." : "Biometric login is not configured"
     property string fingerprintStatus: biometricSelectionEnabled
-        ? "Fingerprint ready — click to scan"
-        : "Login biometric channel not configured"
+        ? "Fingerprint ready. Select to scan."
+        : "Biometric login is not configured"
     property string statusText: "GREETER LINK IDLE"
     property string promptText: "Waiting for greetd"
     property bool promptSecret: true
@@ -173,11 +173,11 @@ QtObject {
         clearSecrets();
         phase = GreeterController.Idle;
         faceStatus = biometricSelectionEnabled
-            ? "Face ID ready — click to scan"
-            : "Login biometric channel not configured";
+            ? "Face ID ready. Select to scan."
+            : "Biometric login is not configured";
         fingerprintStatus = biometricSelectionEnabled
-            ? "Fingerprint ready — click to scan"
-            : "Login biometric channel not configured";
+            ? "Fingerprint ready. Select to scan."
+            : "Biometric login is not configured";
         statusText = biometricSelectionEnabled
             ? "SELECT AUTH VECTOR // " + username.toUpperCase()
             : "ENTER CREDENTIAL // " + username.toUpperCase();
@@ -199,7 +199,7 @@ QtObject {
             if (phase === GreeterController.Authenticating
                     && authenticationMethod !== "password") {
                 queuedMethod = "face";
-                faceStatus = "Face ID queued — waiting for current scan";
+                faceStatus = "Face ID queued. Waiting for the current scan.";
                 statusText = "FACE ID QUEUED // WAITING FOR "
                     + authenticationMethod.toUpperCase();
                 return true;
@@ -213,7 +213,7 @@ QtObject {
     function retryBiometrics() {
         if (!fingerprintAuthenticationEnabled || username === "" || command.length === 0)
             return false;
-        faceStatus = "Face ID ready — click to scan";
+        faceStatus = "Face ID ready. Select to scan.";
         fingerprintStatus = "Touch the fingerprint reader";
         if (conversationActive) {
             if (selectorPending) {
@@ -227,7 +227,7 @@ QtObject {
                     && authenticationMethod !== "password") {
                 queuedMethod = "fingerprint";
                 fingerprintStatus =
-                    "Fingerprint retry queued — waiting for current scan";
+                    "Fingerprint retry queued. Waiting for the current scan.";
                 statusText = "FINGERPRINT QUEUED // WAITING FOR "
                     + authenticationMethod.toUpperCase();
                 return true;

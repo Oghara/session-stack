@@ -154,7 +154,7 @@ case "${1:-apply}" in
         validate_targets
         if hyprlock_depends_on_password_service; then
             echo "Refusing to remove: /etc/pam.d/hyprlock still includes session-stack-lock-password." >&2
-            echo "Retire the recovery client's override first: sudo $script_dir/manage-hyprlock-pam.sh rollback" >&2
+            echo "Restore your previous Hyprlock PAM configuration before removing these services." >&2
             exit 1
         fi
         for service_name in "${service_names[@]}"; do

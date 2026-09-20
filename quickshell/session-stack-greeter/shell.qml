@@ -194,8 +194,8 @@ ShellRoot {
         implicitHeight: 760
         color: "#07090c"
         title: root.fakeMode
-            ? "Session Stack Greeter — safe preview (password: demo)"
-            : "Session Stack Greeter — native protocol test"
+            ? "Session Stack login preview. Password: demo"
+            : "Session Stack login protocol test"
 
         Loader {
             id: previewLoader

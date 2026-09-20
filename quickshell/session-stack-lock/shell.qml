@@ -43,13 +43,13 @@ ShellRoot {
         return methods;
     }
     readonly property string initialStatusText: requestedMode === "lock" && !lockGuardValid
-        ? "Real-lock guard refused; showing visual validation instead"
+        ? "Lock guard refused. Showing a preview."
         : requestedMode === "auth-check" || localAuthCheck
-            ? "Parallel authentication validation — the session is not locked"
+            ? "Authentication test. Your session is not locked."
             : requestedMode === "pam-check"
-                ? "Password validation only — the session is not locked"
+                ? "Password test. Your session is not locked."
                 : requestedMode === "preview"
-                    ? "Visual validation only — authentication and session lock are inactive"
+                    ? "Preview. No authentication or screen locking."
                     : "Requesting the compositor session lock…"
     readonly property string statusText: auth.statusText
     readonly property string passwordStatus: auth.passwordStatus
@@ -93,7 +93,7 @@ ShellRoot {
     }
 
     function finishUnlock(method) {
-        auth.statusText = method + " accepted — releasing the compositor lock…";
+        auth.statusText = method + " accepted. Unlocking…";
         sessionLock.locked = false;
         workerCleanupChecks = 0;
         unlockCleanupTimer.restart();
@@ -333,7 +333,7 @@ ShellRoot {
         implicitWidth: 960
         implicitHeight: 680
         color: "#11111b"
-        title: "Session Stack lock — validation window"
+        title: "Session Stack lock test window"
         onClosed: {
             auth.shutdownAuthentication();
             Qt.quit();
@@ -353,7 +353,7 @@ ShellRoot {
                     previewMode: true
                     authenticationMode: root.requestedMode !== "preview"
                     displayName: root.requestedMode === "preview"
-                        ? "visual validation" : "authentication validation"
+                        ? "preview" : "authentication test"
                     passwordStatus: root.passwordStatus
                     faceStatus: root.faceStatus
                     fingerprintStatus: root.fingerprintStatus

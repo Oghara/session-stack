@@ -2,8 +2,8 @@
 
 A Cyberpunk/Militech screen for locking a Hyprland desktop or signing in through
 an optional greetd greeter. Both use the same native QuickShell interface. PAM
-owns lock authentication; greetd owns login and session launch. Animation and
-recovery cannot grant access.
+handles lock authentication; greetd handles login and session launch. Animation
+and recovery cannot grant access.
 
 ![Native lockscreen](docs/images/native-lock.png)
 
@@ -43,7 +43,7 @@ For a usable lockscreen, follow [lockscreen setup](docs/lockscreen.md), then run
 ```
 
 `auth-check` uses real PAM in an ordinary window. `lock` secures the compositor.
-Password is the default. For a machine with Face ID and no fingerprint reader:
+Password is the default. To enable Face ID alongside it:
 
 ```sh
 SESSION_STACK_AUTH_METHODS=password-face ./session-stack auth-check
@@ -62,23 +62,24 @@ The optional permission is never installed by the normal PAM setup.
 
 ## Choose what to install
 
-The lock package runs on its own. It has no greetd controller, login PAM module,
-account discovery or login deployment scripts. Nothing here changes your login
-manager merely by running a preview or setting up the lockscreen.
+The lock package runs on its own. Setting up the lockscreen does not change your
+login manager.
 
 The full package adds a user picker, manual username entry, session selection,
 and greetd session launch. Its installation and ReGreet rollback instructions
 are in `docs/login.md`. Login activation is explicit and separate from lock setup.
 
-Both modes share wake-key typing, a credential draft across outputs, idle
-clearing, portrait layout, reduced motion and the switchboard animation.
+Typing wakes the screen and enters your first character. All monitors share the
+same input, which clears when idle. Both modes support portrait layouts, reduced
+motion and the switchboard animation.
 Additional authentication prompts stay in the existing PAM conversation.
-Escape clears input. Recovery stays locked and replaces destroyed processes.
+Escape clears input. ICEbreaker recovery returns to authentication and replaces
+destroyed processes in the animation.
 
 ## Development
 
 See [development notes](docs/development.md) for ownership, checks and exports.
-See the [changelog](CHANGELOG.md) for fixes and remaining release checks.
+See the [changelog](CHANGELOG.md) for release changes and known limitations.
 No framework or browser runtime is needed.
 
 The automated checks cover authentication state, input, greetd protocol exchanges

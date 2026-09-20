@@ -1,5 +1,4 @@
-// `running` reflects the process, not requested state, so sleep cannot attest
-// teardown before the monitor exits.
+// Wait for the monitor process to exit before reporting sleep preparation complete.
 import QtQuick
 import Quickshell
 import Quickshell.Io

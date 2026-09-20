@@ -1,8 +1,8 @@
 # Copy this file to greeter.local.toml for machine-specific preferences.
-# Settings are applied when staging a release, not while typing a password.
+# Restage the greeter after changing these settings.
 [authentication]
 password = true
-# auto: offer only for accounts with a detected backend/device/enrollment.
+# auto: offer only for accounts with a working backend, device and enrollment.
 # on: same detection, but fail staging if no account can use the method.
 # off: hide the method and skip its hardware probe.
 face = "auto"
