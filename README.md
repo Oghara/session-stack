@@ -7,21 +7,10 @@ recovery cannot grant access.
 
 ![Native lockscreen](docs/images/native-lock.png)
 
-## Experimental release
+## Compatibility
 
-This is available to download and try. It has been developed on Arch Linux with
-Hyprland's Lua configuration API, Qt 6.11 and patched QuickShell 0.3.0. Other
-distributions and compositors have not been tested.
-
-Attended testing on Verdandi passed password, Face ID and fingerprint-only
-authentication, including password fallback after a fingerprint failure.
-Suspend/resume, display sleep, monitor reconnection and QuickShell failure with
-Hyprlock recovery also passed. These are user-confirmed results on the installed
-`0af2b5a` screens with the host's UWSM fingerprint policy fix.
-
-The later public setup helper and diagnostic changes passed automated checks.
-Installation on a fresh account without existing PAM files or host-specific
-PolicyKit rules remains unverified, so this release is still experimental.
+This is an experimental release for Arch Linux with Hyprland's Lua configuration
+API, Qt 6.11 and patched QuickShell 0.3.0. Other environments have not been tested.
 
 Start with the preview. Before using it as your regular lockscreen, follow the
 [setup and recovery checks](docs/lockscreen.md#before-enabling-automatic-locking).
