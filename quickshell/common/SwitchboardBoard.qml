@@ -64,7 +64,8 @@ Item {
             id: station
             required property int index
             readonly property var node: board.frame.nodeStates[index]
-            readonly property var labelOffset: board.layout.labels[node.id] || [0,-18,'middle']
+            // Centered branch labels must clear the scan outline and tether.
+            readonly property var labelOffset: board.layout.labels[node.id] || [0,-46,'middle']
             readonly property color ink: node.owner === 'daemon' ? '#b6d794' : node.owner === 'contested' ? '#edc57d' : '#c1677c'
             x: node.x; y: node.y
             SwitchboardPath {

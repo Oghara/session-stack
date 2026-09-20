@@ -4,14 +4,9 @@ A Cyberpunk/Militech screen for locking a Hyprland desktop or signing in through
 an optional greetd greeter. Both use the same native QuickShell interface. PAM
 handles lock authentication; greetd handles login and session launch.
 
-![Native lockscreen](docs/images/native-lock.png)
+![Lockscreen startup, failed attempt, ICEbreaker recovery and successful attempt](docs/images/lockscreen-demo.gif)
 
-<details>
-<summary>Watch the animation</summary>
-
-![Preview of a failed attempt and ICEbreaker recovery](docs/images/lockscreen-demo.gif)
-
-</details>
+[View a still image](docs/images/native-lock.png)
 
 ## Compatibility
 
